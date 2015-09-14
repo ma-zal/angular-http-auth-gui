@@ -49,7 +49,7 @@ Right order:
 
 4. Insert into Global controller (optional)
 --------------------------------
-	If you want everytime to see logged user in Global controller, use this code inside this controller:
+If you want everytime to see logged user in Global controller, use this code inside this controller:
 
     var self = this;
 	self.loggedUser = {};
@@ -145,6 +145,7 @@ Used Angular events
 -------------------
 
 ### event:auth-loginConfirmed
+
 Everytime, when new user log-in or log-out, event `event:auth-loginConfirmed` is fired. So u can use:
 
 	$scope.$on('event:auth-loginConfirmed', function(event, loggedUserDetails){
@@ -156,6 +157,7 @@ Everytime, when new user log-in or log-out, event `event:auth-loginConfirmed` is
 			// Note: If user log-out, loggedUserDetails === {} - object without any properties.
 		}
 	});
+
 
 Manual user log-in / log-out / get-user-info
 --------------------------------------------
@@ -186,6 +188,7 @@ If you want to manually call HTTP API to user login/logout, use:
 		 */
 		backendAuthService.getLoggedUser().then(function(loggedUser) {
 			// If user logged, you will se details in loggedUser.
-			// Note: This details are same, as object from last successfull API Login call or from "getLoggedUser" API call.
+			// Note: This details are same, as object from last successfull API Login call
+			//       or from "getLoggedUser" API call.
 		})
 	}]
