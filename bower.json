@@ -1,9 +1,8 @@
 {
   "name": "angular-http-auth-gui",
-  "main": "dist/modal-auth-intercepror.js",
-  "version": "1.0.2",
+  "main": "dist/http-auth-gui-interceptor.js",
   "authors": [
-    "Martin Zaloudek, http://www.zal.cz/"
+    "Martin Zaloudek (http://www.zal.cz)"
   ],
   "description": "Angular module for login/logout to server and for storing details of logged user.",
   "keywords": [
@@ -22,5 +21,9 @@
     "angular": "~1.4.5",
     "angular-bootstrap": "~0.13.4",
     "angular-http-auth": "~1.2.2"
-  }
+  },
+  "repository": {
+  "type": "git",
+  "url": "git://github.com/ma-zal/angular-http-auth-gui.git"
+}
 }
