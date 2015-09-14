@@ -1,9 +1,9 @@
 {
-  "name": "http-auth-gui-interceptor",
+  "name": "angular-http-auth-gui",
   "main": "dist/modal-auth-intercepror.js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "authors": [
-    "Martin Zaloudek"
+    "Martin Zaloudek, http://www.zal.cz/"
   ],
   "description": "Angular module for login/logout to server and for storing details of logged user.",
   "keywords": [
