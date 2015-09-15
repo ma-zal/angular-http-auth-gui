@@ -241,14 +241,7 @@ angular.module('http-auth-gui-interceptor').provider('backendAuthService', funct
 });
 
 /**
- * @typedef {object} LoggedUser
- * @property {string} [cn] - Username (5-2-1)
- * @property {string} [sn] - Last name
- * @property {string} [dn] - Full AD/LDAP DN. For example: "CN=SOMEUSER1,OU=Users,OU=PH,OU=CZPR,DC=EU,DC=novartis,DC=net"
- * @property {string} [givenName] - First name
- * @property {string} [mail] - Primary email address
- * @property {Array.<string>} [memberOf] - List of AD group which they belong.
- * @property {Object.<string, boolean>} [staticFeatures] - List features, that depends on Logged user group
+ * @typedef {Object} LoggedUser
  * @description
  *
  * Currently logged user with properties.
