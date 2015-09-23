@@ -17,8 +17,8 @@ Usage
 
 1. Install via Bower
 --------------------
-    bower install --save components-font-awesome
-    
+    bower install angular-http-auth-gui --save
+
 2. Insert into index.html
 -------------------------
 Note: This is example. See real URL in your project!
