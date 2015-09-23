@@ -146,7 +146,18 @@ Used Angular events
 
 ### event:auth-loginConfirmed
 
-Everytime, when new user log-in or log-out, event `event:auth-loginConfirmed` is fired. So u can use:
+Everytime, when new user log-in or log-out, event `event:auth-loginConfirmed` is fired.
+
+Object in event contains metadata with logged user. If no user logged, parameter contains {} or null in most cases.
+Details depend on JSON result from call to REST API `getLoggedUser` or API `login`.
+
+
+### event:auth-loginCancelled
+
+Everytime, when user click to "Cancel" in login form, event `event:auth-loginCancelled` is fired.
+
+Example: Detect in controller, if user (and who) is logged
+----------------------------------------------------------
 
 	$scope.$on('event:auth-loginConfirmed', function(event, loggedUserDetails){
 		if (loggedUserDetails.username) {
@@ -159,36 +170,67 @@ Everytime, when new user log-in or log-out, event `event:auth-loginConfirmed` is
 	});
 
 
-Manual user log-in / log-out / get-user-info
---------------------------------------------
-If you want to manually call HTTP API to user login/logout, use:
+Example: Enforce login in some controller
+-----------------------------------------
+
+	// Get current user info
+	backendAuthService.getLoggedUser().then(function(loggedUser) {
+		if (loggedUser.username) { // 'username' is only example. use own property check for logged user.
+			// Some user is logged. All is OK.
+			$scope.loggedUser = loggedUser;
+		} else {
+			// No user logged. So popup login dialog.
+			$rootScope.$broadcast('event:auth-loginRequired');
+		}
+	});
+
+	$rootScope.$on('event:auth-loginConfirmed', function(event, loggedUser) {
+		// User logged right now. So update info in your controller.
+		$scope.loggedUser = loggedUser;
+	});
+
+	$rootScope.$on('event:auth-loginCancelled', function(event, loggedUser) {
+		// User 'cancel' the popup login dialog.
+		$location.url('/'); // Sorry, no logged user, no funny. :-)	
+	}
+
+Example: Manual user log-in / log-out / get-user-info
+-----------------------------------------------------
+Login manually in controller (without dialog popup):
 
 	module('myApp').controller('MyCtrl', ['backendAuthService', function(backendAuthService) {
 	
-		/*
-		 * Manual login
-		 */
 		backendAuthService.login('someUsername', 'usersPassword').then(function() {
 			// Login successfull
 		}).catch(function() {
 			// Login failed
 		});
-		
-		/*
-		 * Manual logout
-		 */
+
+	}]);
+	
+Logout manually:
+
+	module('myApp').controller('MyCtrl', ['backendAuthService', function(backendAuthService) {
+
 		backendAuthService.logout().then(function() {
 			// Logout successfull
 		}).catch(function() {
 			// Logout failed
+			// Mostly catched only if some network problem (cannot call REST API to logout).
+			//    Normally does not make sense to do not accept user logout.
 		});
-		
-		/*
-		 * Get user details, if you need it
-		 */
+
+	}]);
+
+Get current logged user in controller:
+
+	module('myApp').controller('MyCtrl', ['backendAuthService', function(backendAuthService) {
+
 		backendAuthService.getLoggedUser().then(function(loggedUser) {
-			// If user logged, you will se details in loggedUser.
+			// If user logged, you will see details in loggedUser.
+			// If no user logged, loggedUser is {} or NULL - in most cases.
 			// Note: This details are same, as object from last successfull API Login call
 			//       or from "getLoggedUser" API call.
 		})
-	}]
+
+	}]);
