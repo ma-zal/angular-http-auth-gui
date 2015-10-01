@@ -10,7 +10,7 @@
  */
 "use strict";
 angular.module('http-auth-gui-interceptor').controller('LoginDialogCtrl',
-function ($modalInstance, $timeout, backendAuthService, authService) {
+function ($modalInstance, $timeout, $filter, backendAuthService, authService) {
 	var ctrl = this;
 
 	/** Angular binding into login form fields */
@@ -58,7 +58,12 @@ function ($modalInstance, $timeout, backendAuthService, authService) {
 				//	 login failed
 				ctrl.loginFormValues.password = "";
 				ctrl.working = false;
-				ctrl.error = (errResult && errResult.data && errResult.data.err ? errResult.data.err : "#ERR_UNKNOWN_SERVER_RESPONSE");
+				ctrl.error = (errResult && errResult.data && errResult.data.err ? errResult.data.err : "#ERR_UNKNOWN");
+
+				// Try to translate returned error (if $translate is defined)
+				try {
+					ctrl.error = $filter('translate')(ctrl.error);
+				} catch(e) {}
 
 				// Focus to password input
 				$timeout(function() {

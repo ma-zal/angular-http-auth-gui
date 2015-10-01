@@ -228,6 +228,7 @@ angular.module('http-auth-gui-interceptor').provider('backendAuthService', funct
          */
         function updateLoggedUserInfo(newLoggedUser) {
             // Remove all old properties
+            var key;
             for (key in loggedUser) {
                 //noinspection JSUnresolvedFunction
                 if (loggedUser.hasOwnProperty(key)) {
@@ -258,7 +259,7 @@ angular.module('http-auth-gui-interceptor').provider('backendAuthService', funct
  */
 "use strict";
 angular.module('http-auth-gui-interceptor').controller('LoginDialogCtrl',
-function ($modalInstance, $timeout, backendAuthService, authService) {
+function ($modalInstance, $timeout, $filter, backendAuthService, authService) {
 	var ctrl = this;
 
 	/** Angular binding into login form fields */
@@ -306,7 +307,12 @@ function ($modalInstance, $timeout, backendAuthService, authService) {
 				//	 login failed
 				ctrl.loginFormValues.password = "";
 				ctrl.working = false;
-				ctrl.error = (errResult && errResult.data && errResult.data.err ? errResult.data.err : "#ERR_UNKNOWN_SERVER_RESPONSE");
+				ctrl.error = (errResult && errResult.data && errResult.data.err ? errResult.data.err : "#ERR_UNKNOWN");
+
+				// Try to translate returned error (if $translate is defined)
+				try {
+					ctrl.error = $filter('translate')(ctrl.error);
+				} catch(e) {}
 
 				// Focus to password input
 				$timeout(function() {
@@ -369,7 +375,7 @@ angular.module('http-auth-gui-interceptor').factory('popupLoginDialog', function
   'use strict';
 
   $templateCache.put('bower_components/angular-http-auth-gui/src/login-dialog.html',
-    "<div class=\"panel panel-primary\"><div class=\"panel-heading\"><h3 class=\"panel-title\">Enter login credentials</h3></div><div class=\"panel-body\"><div data-ng-show=\"loginDialogCtrl.error\" data-ng-switch=\"loginDialogCtrl.error\" class=\"bs-callout bs-callout-danger\" role=\"alert\"><div data-ng-switch-when=\"#ERR_WRONG_CREDENTIALS\"><h4>Wrong credentials. Try again.</h4></div><div data-ng-switch-when=\"#ERR_CONNECTION_TO_AUTHSERVER\"><h4>Remote Authentization server is down.</h4>Sorry, we are not able to check your credentials at this moment.</div><div data-ng-switch-default><h4>Unknown error</h4>{{loginDialogCtrl.error}}</div></div><br class=\"hidden-xs\"><form name=\"loginForm\" class=\"form-horizontal\" data-ng-submit=\"loginDialogCtrl.login()\"><fieldset><div class=\"input-group col-sm-8 col-sm-offset-2\"><span class=\"input-group-addon\"><i class=\"fa fa-fw fa-user\"></i></span> <input id=\"login_username\" name=\"username\" type=\"text\" placeholder=\"Username\" class=\"form-control input-md\" autocomplete=\"on\" data-ng-disabled=\"loginDialogCtrl.working\" data-ng-model=\"loginDialogCtrl.loginFormValues.username\"></div><br><div class=\"input-group col-sm-8 col-sm-offset-2\"><span class=\"input-group-addon\"><i class=\"fa fa-fw fa-lock\"></i></span> <input id=\"login_password\" name=\"password\" type=\"password\" placeholder=\"Password\" class=\"form-control input-md\" autocomplete=\"on\" data-ng-disabled=\"loginDialogCtrl.working\" data-ng-model=\"loginDialogCtrl.loginFormValues.password\"></div><br><div class=\"input-group text-right col-sm-8 col-sm-offset-2\"><button data-ng-disabled=\"loginDialogCtrl.working || !loginDialogCtrl.loginFormValues.username || !loginDialogCtrl.loginFormValues.password\" type=\"submit\" id=\"login_send\" name=\"login_send\" class=\"btn btn-success\"><span data-ng-hide=\"loginDialogCtrl.working\"><i class=\"fa fa-fw fa-check\"></i> Login</span> <span data-ng-show=\"loginDialogCtrl.working\"><i class=\"fa fa-fw fa-circle-o-notch fa-spin\"></i> Loging in ...</span></button> <button type=\"button\" id=\"cancelbutton\" class=\"btn btn-link\" data-ng-disabled=\"working\" data-ng-click=\"loginDialogCtrl.cancelLogin()\"><i class=\"fa fa-times\"></i> Cancel</button></div></fieldset></form></div></div>"
+    "<div class=\"panel panel-primary\"><div class=\"panel-heading\"><h3 class=\"panel-title\">Enter login credentials</h3></div><div class=\"panel-body\"><div data-ng-show=\"loginDialogCtrl.error\" class=\"bs-callout bs-callout-danger\" role=\"alert\"><h4>Error</h4>{{loginDialogCtrl.error}}</div><br class=\"hidden-xs\"><form name=\"loginForm\" class=\"form-horizontal\" data-ng-submit=\"loginDialogCtrl.login()\"><fieldset><div class=\"input-group col-sm-8 col-sm-offset-2\"><span class=\"input-group-addon\"><i class=\"fa fa-fw fa-user\"></i></span> <input id=\"login_username\" name=\"username\" type=\"text\" placeholder=\"Username\" class=\"form-control input-md\" autocomplete=\"on\" data-ng-disabled=\"loginDialogCtrl.working\" data-ng-model=\"loginDialogCtrl.loginFormValues.username\"></div><br><div class=\"input-group col-sm-8 col-sm-offset-2\"><span class=\"input-group-addon\"><i class=\"fa fa-fw fa-lock\"></i></span> <input id=\"login_password\" name=\"password\" type=\"password\" placeholder=\"Password\" class=\"form-control input-md\" autocomplete=\"on\" data-ng-disabled=\"loginDialogCtrl.working\" data-ng-model=\"loginDialogCtrl.loginFormValues.password\"></div><br><div class=\"input-group text-right col-sm-8 col-sm-offset-2\"><button data-ng-disabled=\"loginDialogCtrl.working || !loginDialogCtrl.loginFormValues.username || !loginDialogCtrl.loginFormValues.password\" type=\"submit\" id=\"login_send\" name=\"login_send\" class=\"btn btn-success\"><span data-ng-hide=\"loginDialogCtrl.working\"><i class=\"fa fa-fw fa-check\"></i> Login</span> <span data-ng-show=\"loginDialogCtrl.working\"><i class=\"fa fa-fw fa-circle-o-notch fa-spin\"></i> Loging in ...</span></button> <button type=\"button\" id=\"cancelbutton\" class=\"btn btn-link\" data-ng-disabled=\"working\" data-ng-click=\"loginDialogCtrl.cancelLogin()\"><i class=\"fa fa-times\"></i> Cancel</button></div></fieldset></form></div></div>"
   );
 
 }]);

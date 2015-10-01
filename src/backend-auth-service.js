@@ -193,6 +193,7 @@ angular.module('http-auth-gui-interceptor').provider('backendAuthService', funct
          */
         function updateLoggedUserInfo(newLoggedUser) {
             // Remove all old properties
+            var key;
             for (key in loggedUser) {
                 //noinspection JSUnresolvedFunction
                 if (loggedUser.hasOwnProperty(key)) {

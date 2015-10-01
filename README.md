@@ -140,6 +140,24 @@ Change default backend API URLs
 		backendAuthServiceProvider.backendUrl.loout = '/my-api/new/logout-me';
 	});
 	
+Error messages
+--------------
+
+If login fail (or any other error occures), you can show any message to user.
+
+As response to login try, return HTTP-403 and in body send JSON with `err`.
+
+	HTTP/1.1 403 Forbidden
+	{"err": "--Any other error text message--"}
+
+If your application uses Angular `$translate`, returned message will be translated (if translation exists). So example	
+
+	HTTP/1.1 403 Forbidden
+	{"err": "#ERR_WRONG_CREDENTIALS"}
+	
+tries to find string `#ERR_WRONG_CREDENTIALS` in `$translate`.
+If found, user will see the translation.
+If no translation found or `$translate` not implemented, original string will be show to user.
 	
 Used Angular events
 -------------------
