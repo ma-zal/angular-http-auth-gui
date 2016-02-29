@@ -19,8 +19,8 @@
   ],
   "dependencies": {
     "angular": ">=1.4.5",
-    "angular-bootstrap": "~0.13.4",
-    "angular-http-auth": "~1.2.2"
+    "angular-bootstrap": ">=0.13.4",
+    "angular-http-auth": ">=1.2.2"
   },
   "repository": {
   "type": "git",
