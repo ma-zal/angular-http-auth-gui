@@ -10,7 +10,7 @@
  */
 "use strict";
 angular.module('http-auth-gui-interceptor').controller('LoginDialogCtrl',
-function ($modalInstance, $timeout, $filter, backendAuthService, authService) {
+function ($uibModalInstance, $timeout, $filter, backendAuthService, authService) {
 	var ctrl = this;
 
 	/** Angular binding into login form fields */
@@ -52,7 +52,7 @@ function ($modalInstance, $timeout, $filter, backendAuthService, authService) {
 				//login successfull
 
 				//close dialog
-				$modalInstance.dismiss();
+				$uibModalInstance.dismiss();
 
 			}).catch(function(errResult) {
 				//	 login failed
@@ -86,7 +86,7 @@ function ($modalInstance, $timeout, $filter, backendAuthService, authService) {
 	 */
 	function cancelLogin() {
 		//close login dialog and reject promise
-		$modalInstance.dismiss("cancelledByUser"); // message will be send to $routeChangeError, which show corresponding message to user.
+		$uibModalInstance.dismiss("cancelledByUser"); // message will be send to $routeChangeError, which show corresponding message to user.
 
 		//reject all storedRequests
 		authService.loginCancelled(null, 'cancelledByUser');

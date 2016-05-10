@@ -1,6 +1,6 @@
 {
   "name": "http-auth-gui-interceptor",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Module is extension to 'angular-http-auth', that automatically open Bootstrap Angular-UI modal dialog when HTTP 401 occures in any HTTP result.",
   "main": "gruntfile.js",
   "readme": "readme.md",

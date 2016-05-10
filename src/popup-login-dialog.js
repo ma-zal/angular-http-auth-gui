@@ -9,13 +9,13 @@
  * NOTE: Method has ability to prevent multiple dialog popup.
  * So when dialog is visible, multiple calls of methos is safe == nothing will happend.
  */
-angular.module('http-auth-gui-interceptor').factory('popupLoginDialog', function($modal) {
+angular.module('http-auth-gui-interceptor').factory('popupLoginDialog', function($uibModal) {
 
 	var openDialogInstance;
 
 	return function () {
 		if (!openDialogInstance || openDialogInstance.result.$$state.status > 0) { //promise $$state: 0=pending, 1=resolved, 2=rejected
-			openDialogInstance = $modal.open({
+			openDialogInstance = $uibModal.open({
 				templateUrl: 'bower_components/angular-http-auth-gui/src/login-dialog.html',
 				animation: false, // Workaround for Angular 1.4 - (issue: gray background stays visible after modal dialog close)
 				size: 'md',
